@@ -26,6 +26,20 @@ Merkle trees will be used to encrypt the data using a collision resistant hash f
 \section{Application}
 We will demonstrate encryption and security of documents by using our own block chain. We will further show how a Merkle Tree effectively identifies if any given document has been changed or corrupted.  
 \section{Functionality}
+We will use two data structures to simulate a blockchain:
+\subsection{Linked List}
+The Linked List will consist of blocks. Each block will have its own ID, contain the files associated with the block, the root hash of the Merkle 
+tree, and hash of the previous block. In this way, multiple blocks 
+will be chained to form a block chain. The Linked List interface will consist of three main functionalities:
+\begin{enumerate}
+\item add: The add function will take in input the list of files and create a block using that list and add it to the blockchain by setting its previous hash to the hash of head of the blockchain. 
+\item verify: The verify function is responsible for verifying the integrity of the chain. This involves traversing the chain from the most recent block back to the genesis block (first block created), verifying each block's hash against the hash of the previous block. If any block's hash is found to be incorrect, it indicates that the chain has been tampered with and is no longer valid. If all blocks' hashes are correct, it indicates that the chain is valid and has not been tampered with. 
+\\\\ We may use an alternate and more robust implementation of verify function which will 
+be able to check for tampering even when the program isn't running by storing the hash value(s) of the blockchain
+in a csv file and then comparing the current hash values with those stored values in the csv files. 
+\item read: The read function will be passed a block ID, it will then traverse through the blockchain and find the block with the given ID. Then it will print all the data in all of the documents containted within that block. 
+\end{enumerate}
+\subsection{Merkle Tree}
 The Merkle Tree has two key functions: 
 \\\\
 1) Encryption: This is where the Merkle Tree (or Block) is created using the decided data/documents and collision resistant hash function.
@@ -85,7 +99,8 @@ Merkle Tree's are efficient at verifying if a document has been changed as an al
 .
 \\\\\\\\\\
 \section{Datasets}
-While we have not come up with a particular dataset at this time, we plan to have our dataset related to documents. It should be noted that our dataset is one which we should be able to change or corrupt after using it to make the Merkle Tree to demonstrate its Validation Functionality.
+While we have not come up with a particular dataset at this time, we plan to have our dataset related to documents. It should be noted that our dataset is one which we should be able to change or corrupt after using it to make the Merkle Tree to demonstrate its Validation Functionality. 
+
 \newpage
 \section{Work Distribution}
 Fill in the table which indicates the work distribution of each member.
