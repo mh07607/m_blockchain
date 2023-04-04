@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.4.29)  4 APR 2023 05:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.3) (preloaded format=pdflatex 2022.4.29)  4 APR 2023 06:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -421,16 +421,8 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 110.
 
-Overfull \hbox (65.30191pt too wide) in paragraph at lines 110--118
+Overfull \hbox (36.41296pt too wide) in paragraph at lines 110--118
  [][] 
- []
-
-
-LaTeX Warning: Empty `thebibliography' environment on input line 127.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 125--127
-\OT1/cmr/m/n/10 https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/
  []
 
 [6] (main.aux)
@@ -441,17 +433,17 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 41D0D78A6ADB6FE5CB5EDA9760CFA7D8;975.
  ) 
 Here is how much of TeX's memory you used:
- 8854 strings out of 478547
- 142238 string characters out of 2840891
- 439005 words of memory out of 3000000
- 26954 multiletter control sequences out of 15000+600000
- 473206 words of font info for 41 fonts, out of 8000000 for 9000
+ 8863 strings out of 478547
+ 142371 string characters out of 2840891
+ 439087 words of memory out of 3000000
+ 26959 multiletter control sequences out of 15000+600000
+ 473720 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,8n,63p,599b,409s stack positions out of 10000i,1000n,20000p,200000b,80000s
-<C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on main.pdf (6 pages, 189577 bytes).
+ 60i,8n,63p,654b,409s stack positions out of 10000i,1000n,20000p,200000b,80000s
+<C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Arsalan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on main.pdf (6 pages, 220357 bytes).
 PDF statistics:
- 117 PDF objects out of 1000 (max. 8388607)
- 29 named destinations out of 1000 (max. 500000)
+ 134 PDF objects out of 1000 (max. 8388607)
+ 31 named destinations out of 1000 (max. 500000)
  98 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -7,7 +7,7 @@
 \usepackage{cite}
 \title {CS 201: Data Structures II \\Merkle Trees} % Mention your project title
 
-\author{Group 3} % Mention your team name
+\author{L5- Group 2} % Mention your team name
 \date{Spring 2023}  
 
 \begin{document}
@@ -28,7 +28,7 @@ We will demonstrate encryption and security of documents by using our own block 
 \section{Functionality}
 We will use two data structures to simulate a blockchain:
 \subsection{Linked List}
-The Linked List will consist of blocks. Each block will have its own ID, contain the files associated with the block, the root hash of the Merkle 
+The Linked List will consist of blocks. Each block will have its own ID, contain the files associated with the block, the root hash of its Merkle 
 tree, and hash of the previous block. In this way, multiple blocks 
 will be chained to form a block chain. The Linked List interface will consist of three main functionalities:
 \begin{enumerate}
@@ -99,7 +99,7 @@ Merkle Tree's are efficient at verifying if a document has been changed as an al
 .
 \\\\\\\\\\
 \section{Datasets}
-While we have not come up with a particular dataset at this time, we plan to have our dataset related to documents. It should be noted that our dataset is one which we should be able to change or corrupt after using it to make the Merkle Tree to demonstrate its Validation Functionality. 
+It will be fitting to use a part of Bitcoin historical dataset like this \href{https://www.kaggle.com/datasets/prasoonkottarathil/btcinusd}{ one}. We want to take multiple csv files as input to make multiple blocks and then try edititng the csv files to check for the Validation Functionality. However, we are not completely sure about the feasibility of using such a huge dataset. It should be noted that our dataset is one which we should be able to change or corrupt after using it to make the Merkle Tree to demonstrate its Validation Functionality. 
 
 \newpage
 \section{Work Distribution}
@@ -110,10 +110,10 @@ Fill in the table which indicates the work distribution of each member.
     \begin{tabular}{|c|c|c|}
       \hline
       Item & Activity   & ID      \\ \hline
-      1    & Researching and Exploring the functionality of Merkle Tree's (Verification and Encryption) & mh07607 \\ \hline
-      2    & Writing this Documentation and Researching the process of Verification and Encryption & ms07164 \\ \hline
-      3    & Exploring the application and looking at sample code & ab07351 \\ \hline
-      4    & Exploring the application and looking at sample code & aj07154 \\ \hline
+      1    & Generating Blockchain on data input (Encrypting and Securing the Data)  & mh07607 \\ \hline
+      2    & Validating Blockchain and verifying existence of node in Merkle Tree (Merkle Proof) & ms07164 \\ \hline
+      3    & Implementing Blockchain interface and retrieving/storing data from dataset & ab07351 \\ \hline
+      4    & Merkle Tree implementation and storing block information on csv file & aj07154 \\ \hline
     \end{tabular}
 
     \label{tab:my-table6}
@@ -122,8 +122,11 @@ Fill in the table which indicates the work distribution of each member.
 \section{Attribution}
 
 \begin{thebibliography}{9}
-https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/
-https://www.geeksforgeeks.org/introduction-to-merkle-tree/
+  \bibitem{decentralizedthoughts}
+Decentralized Thoughts. (2020, December 22). \textit{What is a Merkle Tree?} Retrieved April 4, 2023, from \url{https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/}
+  \bibitem{geeksforgeeks}
+GeeksforGeeks. (2018). \textit{Introduction to Merkle Tree}. Retrieved April 4, 2023, from \url{https://www.geeksforgeeks.org/introduction-to-merkle-tree/}
+
   \end{thebibliography}
 \end{document}
 
