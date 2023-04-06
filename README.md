@@ -1,2 +1,2 @@
 # m_blockchain
-simple local blockchain implementation
+Simple local blockchain implementation for our Data Structures Project.
