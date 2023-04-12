@@ -9,9 +9,21 @@ class MerkleTree():
         self.root = None
 
     def __createTree(self):
-        hashedLeafs = [] 
+        tree = [] 
         for thisData in self.data:
-            hashedLeafs.append(hashlib.sha256(thisData.encode('utf-8')).hexdigest()) #first layer of encryption
-        print(hashedLeafs)
+            tree.append(hashlib.sha256(thisData.encode('utf-8')).hexdigest()) #first layer of encryption
+        print("The Zeroth Layer: ", tree)
+
+        while len(tree) > 1:
+            if len(tree) % 2 != 0:
+                tree.append(tree[-1]) #if there is an odd number of data values we duplicate the last data value
+
+        level= []
+        for i in range (0, len(tree), 2): #Combining two hashed nodes to create the next level
+            level.append(hashlib.sha256((tree[i] + tree[i+1]).encode('utf-8')).hexdigest())
+            print("Level ", i, " :", level)
+        tree = level
+
+        return tree
 
 tree = MerkleTree(['a', 'b', 'c', 'd'])
