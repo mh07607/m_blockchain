@@ -1,4 +1,4 @@
-# Python code for implemementing Merkle Tree
+ # Python code for implemementing Merkle Tree
 from typing import List
 import hashlib
 class Node:
@@ -27,7 +27,7 @@ class MerkleTree:
 		self.__buildTree(values)
 
 	def __buildTree(self, values: List[str]) -> None:
-
+		
 		leaves: List[Node] = [Node(None, None, Node.hash(e), e) for e in values]
 		if len(leaves) % 2 == 1:
 			leaves.append(leaves[-1].copy()) # duplicate last elem if odd number of elements
