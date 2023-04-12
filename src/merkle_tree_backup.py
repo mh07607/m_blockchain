@@ -1,4 +1,4 @@
- # Python code for implemementing Merkle Tree
+# Python code for implemementing Merkle Tree
 from typing import List
 import hashlib
 class Node:
