@@ -60,7 +60,9 @@ class MerkleTree:  # Defining the MerkleTree class
 
 		# If there are only two nodes, create a parent node for them
 		if len(nodes) == 2:
-			return Node(nodes[0], nodes[1], Node.hash(nodes[0].value + nodes[1].value), nodes[0].content+"+"+nodes[1].content)
+			Hash_Value = Node.hash(nodes[0].value + nodes[1].value)
+			Combined_Content = nodes[0].content+"+"+nodes[1].content
+			return Node(nodes[0], nodes[1], Hash_Value, Combined_Content)
 		
 		# Recursively build the left and right subtrees
 		left: Node = self.__buildTreeRec(nodes[:half])
