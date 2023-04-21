@@ -1,9 +1,11 @@
 import hashlib
+from merkle_tree import Merkle_Tree, Node
 
 class Block:
-    def __init__(self, data, previous_block=None):
+    def __init__(self, data, merkle_tree: Node, previous_block=None):
         self.data = data
         self.previous_block = previous_block
+        self.mtree = merkle_tree
         self.previous_hash = None
         self.hash = self.calculate_hash()
 
