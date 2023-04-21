@@ -24,14 +24,19 @@ class Block:
 class Blockchain:
     def __init__(self):
         self.head = None
+        self.file_hash = None
 
-    def add(self, data):
-        if not self.head:
-            self.head = Block(data)
-        else:
-            new_block = Block(data, self.head)
-            new_block.previous_hash = self.head.hash
-            self.head = new_block
+    def add_file(self, filename):
+        with open(filename, 'rb') as f:
+            file_data = f.read()
+            if not self.head:
+                self.head = Block(file_data)
+                self.file_hash = hashlib.sha256(file_data).hexdigest()
+            else:
+                new_block = Block(file_data, self.head)
+                new_block.previous_hash = self.head.hash
+                self.head = new_block
+                self.file_hash = hashlib.sha256(file_data + self.file_hash.encode('utf-8')).hexdigest()
 
     def verify(self):
         if not self.head:
@@ -42,6 +47,10 @@ class Blockchain:
             if current_block.previous_hash != current_block.previous_block.hash:
                 return False
             current_block = current_block.previous_block
+
+        if self.file_hash != current_block.hash:
+            return False
+
         return True
 
     def update_block(self, block_data, new_data):
@@ -50,22 +59,22 @@ class Blockchain:
             if current_block.data == block_data:
                 current_block.data = new_data
                 current_block.update_hash()
+                self.file_hash = hashlib.sha256(new_data + self.file_hash.encode('utf-8')).hexdigest()
                 break
             current_block = current_block.previous_block
 
 
 blockchain = Blockchain()
 
+blockchain.add_file("s1.txt")
 
-blockchain.add("Hello")
-blockchain.add("Arsalan")
-blockchain.add("!")
+print(blockchain.verify())
 
+with open("s1.txt", "a") as f:
+    f.write("This is some new content.")
 
-print(blockchain.verify())  
+print(blockchain.verify())
 
+blockchain.update_block(b'This is the original file contents.', b'This is the new file contents.')
 
-blockchain.update_block("Arsalan", "Muzammil")
-
-
-print(blockchain.verify()) 
+print(blockchain.verify())
