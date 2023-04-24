@@ -1,3 +1,8 @@
+#Instructions:
+#First create a block by typing a block number and then clicking add block:
+#Then type the block number to which you want to add document. Then click add document. Browse will open which only accepts .txt files.
+#Verify document button can be clicked. All the documents added should appear in a dropdown menu below the button.
+
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
