@@ -104,5 +104,5 @@ bc = Blockchain()
 bc.add_file(["dataset\sample test case\s1.txt", "dataset\sample test case\s2.txt", "dataset\sample test case\s3.txt"])
 print(bc.verify())
 with open("dataset\sample test case\s1.txt", "a") as f:
-    f.write("Teri maa ki chu")
+    f.write("Ter")
 print(bc.verify())
