@@ -2,7 +2,7 @@ import hashlib
 from merkle_tree import MerkleTree, Node
 
 class Block:
-    def __init__(self, data, merkle_tree: MerkleTree, previous_block=None):
+    def __init__(self, merkle_tree: MerkleTree, previous_block=None):
         #self.data = data
         self.previous_block = previous_block
         self.mtree: MerkleTree = merkle_tree
@@ -10,7 +10,7 @@ class Block:
         self.hash = self.mtree.root.value#self.calculate_hash()
 
     def verify(self):
-        self.mtree.verify()
+        return self.mtree.verify()
     """ def calculate_hash(self):
         sha = hashlib.sha256()
         sha.update(str(self.data).encode('utf-8'))
@@ -35,22 +35,15 @@ class Blockchain:
         self.head = None
         #self.file_hash = None
 
-    def add_file(self, filenames):
-        file_contents = []
-        for filename in filenames:
-            with open(filename, 'r') as f:
-                file_data = f.read()
-            f.close()
-            file_contents.append(file_data)
-        
+    def add_file(self, filenames):      
 
         if not self.head:
-            mtree = MerkleTree(file_contents)
-            self.head = Block(file_data, mtree)
+            mtree = MerkleTree(filenames)
+            self.head = Block(mtree)
             #self.file_hash = hashlib.sha256(file_data).hexdigest()
         else:
-            mtree = MerkleTree(file_contents)
-            new_block = Block(file_data, self.head)
+            mtree = MerkleTree(filenames)
+            new_block = Block(self.head)
             #new_block.previous_hash = self.head.hash
             new_block.previous_block = self.head
             self.head = new_block
@@ -68,6 +61,8 @@ class Blockchain:
             else:
                 return i
             i = i + 1
+        return True
+
             
 
         # if self.file_hash != current_block.hash:
@@ -104,5 +99,4 @@ bc = Blockchain()
 bc.add_file(["dataset\sample test case\s1.txt", "dataset\sample test case\s2.txt", "dataset\sample test case\s3.txt"])
 print(bc.verify())
 with open("dataset\sample test case\s1.txt", "a") as f:
-    f.write("Ter")
 print(bc.verify())
