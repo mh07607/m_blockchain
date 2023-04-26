@@ -59,20 +59,19 @@ def build_block():
         return
     else:
         built_blocks.append(block_number) # Noting down Built merkle trees
-    # Call Build_Tree Here!
-    #Build_Tree(file_addresses)
+    # Call Build Block Here!
     messagebox.showinfo("Success", "Merkle Tree Constructed! Block built!")
     
 def verify_chain():
-    #Verify chain code here
+    # Verify chain code here
     blockchain = blockchain()
     is_valid = blockchain.verify()
     if(is_valid):
-
-     print("The blockchain is valid")
+        print("The blockchain is valid")
+        messagebox.showinfo("Success", "Blockchain is Valid!")
     else:
-     print("The blockchain is not valid")
-
+        print("The blockchain is not valid")
+        messagebox.showerror("Error", "Invalid Blockchain! Correction Needed")
 
 def verify_document():
     selected_file = file_address_selection.get()
