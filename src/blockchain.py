@@ -9,8 +9,8 @@ class Block:
         #self.previous_hash = None
         self.hash = self.mtree.root.value#self.calculate_hash()
 
-    def verify(self):
-        return self.mtree.verify()
+    def verify_block(self):
+        return self.mtree.verify_tree()
     """ def calculate_hash(self):
         sha = hashlib.sha256()
         sha.update(str(self.data).encode('utf-8'))
@@ -32,8 +32,17 @@ class Block:
 
 class Blockchain:
     def __init__(self):
-        self.head = None
+        self.head :Block = None
+        self.length = 0
         #self.file_hash = None
+
+    def add_block(self, addresses):
+        merkle_tree = MerkleTree(addresses)
+        block = Block(merkle_tree)
+        block.previous_block = self.head
+        self.head = block
+        self.length = self.length+1
+
 
     def add_files(self, filenames):      
 
@@ -51,17 +60,17 @@ class Blockchain:
 
     def verify(self):
         if not self.head:
-            return True
+            return 'True'
 
         current_block = self.head
         i = 0
         while current_block:
-            if(current_block.verify()):
+            if(current_block.verify_block()):
                 current_block = current_block.previous_block
             else:
                 return i
             i = i + 1
-        return True
+        return 'True'
 
     def verify_document(self, address, block_number):
         i = 0

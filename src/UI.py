@@ -12,6 +12,7 @@ File_Address_txt = [] # List of Tuples (Block Num, FileAddress)
 block_num_lst = [] # List of Block Numbers
 file_address_dropdown = None # Initializing
 built_blocks=[]
+blockchain = Blockchain()
 # Blockchain.apppend(BuildBlock(B1))
 
 def browse_file():
@@ -37,6 +38,7 @@ def add_block():
     block_number = block_number_entry.get()
     if block_number.isdigit() and block_number not in block_num_lst: # Error Checking/Repeatition Checking
         # Add block code here
+
         messagebox.showinfo("Success", "Block added")
         block_num_lst.append(block_number)
         return True
@@ -60,18 +62,20 @@ def build_block():
     else:
         built_blocks.append(block_number) # Noting down Built merkle trees
     # Call Build_Tree Here!
+    blockchain.add_block(file_addresses)
+
     #Build_Tree(file_addresses)
     messagebox.showinfo("Success", "Merkle Tree Constructed! Block built!")
     
 def verify_chain():
     #Verify chain code here
-    blockchain = blockchain()
     is_valid = blockchain.verify()
-    if(is_valid):
-
-     print("The blockchain is valid")
+    if(is_valid == 'True'):
+        messagebox.showinfo("Success", "The blockchain is valid")
+        print("The blockchain is valid")
     else:
-     print("The blockchain is not valid")
+        messagebox.showerror("Failure", "The blockchain is not valid")
+        print("The blockchain is not valid")
 
 
 def verify_document():
@@ -80,8 +84,18 @@ def verify_document():
         messagebox.showerror("Error", "No file selected")
         return
     # Verify document code here
+
+    block_num = int([num[0] for num in File_Address_txt if num[1] == selected_file][0])
+    i = blockchain.length
+    current_block = blockchain.head
+    while(i > block_num+1):
+        current_block = current_block.previous_block
+        i=i-1
+    if(current_block.mtree.verify_inclusion(selected_file) == False):
+        messagebox.showerror("Failure", "Document not verified")
+    else:
+        messagebox.showinfo("Success", "Document verified")
     print(f"Selected file: {selected_file}")
-    messagebox.showinfo("Success", "Document verified")
     
 def update():
     global file_address_dropdown  # Add a global declaration here
