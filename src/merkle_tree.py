@@ -16,6 +16,7 @@ class Node:
 		self.value = value
 		self.content = content
 		self.is_copied = is_copied
+
 		
 	@staticmethod
 	def hash(val: str) -> str:
@@ -107,7 +108,7 @@ def mixmerkletree() -> None:
 	original transaction from the final output. """
 
 	# Define a list of input values
-	elems = ["Lorem Impsum Mahio", ""]
+	elems = ["a", "b", "c", "d"]
 	#As there are odd number of inputs, the last input is repeated
 	print("Inputs: ")
 	print(*elems, sep=" | ") # Print the input values separated by "|"
@@ -118,4 +119,3 @@ def mixmerkletree() -> None:
 
 mixmerkletree()
 
-#This code was contributed by Pranay Arora (TSEC-2023).
