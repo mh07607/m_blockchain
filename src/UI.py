@@ -73,8 +73,8 @@ def verify_chain():
     if(is_valid == 'True'):
         messagebox.showinfo("Success", "The blockchain is valid")
         print("The blockchain is valid")
-    else:
-        messagebox.showerror("Failure", "The blockchain is not valid")
+    else:                              
+        messagebox.showerror("Failure", f"The blockchain is not valid! The first incorrect block is Block {is_valid}")
         print("The blockchain is not valid")
 
 
