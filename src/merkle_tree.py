@@ -39,17 +39,25 @@ class Node:
 
 class MerkleTree:  # Defining the MerkleTree class
 
-	def __init__(self, values: List[str]) -> None:
+	def __init__(self, addresses: List[str]) -> None:
 		#Initialize a new Merkle Tree.
+		self.addresses = addresses
 		self.leaves=[]
 		self.leaves_dictionary = {}
-		self.__buildTree(values)
+		self.root = self.__buildTree(addresses)
 
-	def __buildTree(self, contents: List[str]) -> None:
+	def __buildTree(self, addresses: List[str]) -> None:
 
 		#Build the Merkle Tree recursively.
 		# Create leaf nodes for each value in the input list
 		#leaves: List[Node] = [Node(None, None, Node.hash(e), e) for e in values]
+		contents = []
+		for filename in addresses:
+			with open(filename, 'r') as f:
+				file_data = f.read()
+			f.close()
+			contents.append(file_data)
+	
 		leaves: List[Node] = []
 		for content in contents:
 			node = Node(None, None, Node.hash(content), content)
@@ -63,7 +71,8 @@ class MerkleTree:  # Defining the MerkleTree class
 		self.leaves = leaves
 
 		# Build the tree recursively
-		self.root: Node = self.__buildTreeRec(leaves)
+		
+		return self.__buildTreeRec(leaves)
 
 	def __buildTreeRec(self, nodes: List[Node]) -> Node: #Contains The list of nodes to be included in the Merkle Tree.
 		if len(nodes) % 2 == 1:  # If the number of nodes is odd, duplicate the last node
@@ -101,10 +110,12 @@ class MerkleTree:  # Defining the MerkleTree class
 		return parent #Returns The root node of the Merkle Tree.
 
 	def verify(self):
-		hashed_value = self.__buildTreeRec(self.leaves).value
+		hashed_value = self.__buildTree(self.addresses).value
+		print(hashed_value, self.root.value)
 		if(hashed_value == self.root.value):
 			return True
-		return False
+		else:
+			return False
 
 	def printTree(self) -> None:
 		self.__printTreeRec(self.root) #Calling Helper function
