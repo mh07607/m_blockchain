@@ -6,6 +6,7 @@
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
+from blockchain import*
 
 File_Address_txt = [] # List of Tuples (Block Num, FileAddress)
 block_num_lst = [] # List of Block Numbers
@@ -63,8 +64,15 @@ def build_block():
     messagebox.showinfo("Success", "Merkle Tree Constructed! Block built!")
     
 def verify_chain():
-    # Verify chain code here
-    print("Chain Verified")
+    #Verify chain code here
+    blockchain = blockchain()
+    is_valid = blockchain.verify()
+    if(is_valid):
+
+     print("The blockchain is valid")
+    else:
+     print("The blockchain is not valid")
+
 
 def verify_document():
     selected_file = file_address_selection.get()

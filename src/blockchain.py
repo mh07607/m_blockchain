@@ -101,8 +101,6 @@ bc = Blockchain()
 bc.add_file(["dataset\sample test case\s1.txt", "dataset\sample test case\s2.txt", "dataset\sample test case\s3.txt"])
 print(bc.verify())
 with open("dataset\sample test case\s1.txt", "a") as f:
-    f.write("new content")
-f.close()
 print(bc.verify())
 print(bc.verify_document("dataset\sample test case\s2.txt", 0))
 print(bc.verify_document("dataset\sample test case\s1.txt", 0))
