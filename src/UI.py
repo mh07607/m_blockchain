@@ -9,6 +9,7 @@ from tkinter import filedialog, messagebox
 File_Address_txt = [] # List of Tuples (Block Num, FileAddress)
 block_num_lst = [] # List of Block Numbers
 file_address_dropdown = None # Initializing
+# Blockchain.apppend(BuildBlock(B1))
 
 def browse_file():
     filetypes = [('Text Files', '*.txt')] # Restricting FileType to txt 
