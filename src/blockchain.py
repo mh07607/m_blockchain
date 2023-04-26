@@ -55,10 +55,14 @@ class Blockchain:
             return True
 
         current_block = self.head
-        while current_block.previous_block:
-            if 
-                return False
-            current_block = current_block.previous_block
+        i = 0
+        while current_block:
+            if(current_block.verify()):
+                current_block = current_block.previous_block
+            else:
+                return i
+            i = i + 1
+            
 
         # if self.file_hash != current_block.hash:
         #     return False
