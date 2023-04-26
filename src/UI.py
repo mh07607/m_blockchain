@@ -1,6 +1,7 @@
 #Instructions:
 #First create a block by typing a block number and then clicking add block:
 #Then type the block number to which you want to add document. Then click add document. Browse will open which only accepts .txt files.
+#Then Type the block number and click build block to construct a merkle tree.
 #Verify document button can be clicked. All the documents added should appear in a dropdown menu below the button.
 
 import tkinter as tk
@@ -41,6 +42,20 @@ def add_block():
         messagebox.showerror("Error", "Invalid block number")
         return False
     
+def build_block():
+    block_number = block_number_entry.get()
+    if not block_number.isdigit() or block_number not in block_num_lst: #Error Checking/Repeatition Checking
+        messagebox.showerror("Error", "Invalid block number")
+        return
+    
+    # Procures File addresses for the entered block num, and 
+    file_addresses = [address[1] for address in File_Address_txt if address[0] == block_number]
+    if not file_addresses:
+        messagebox.showwarning("Warning", f"No files found for block {block_number}")
+        return
+    #Call Build_Tree Here!
+    #Build_Tree(file_addresses)
+    
 def verify_chain():
     # Verify chain code here
     print("Chain Verified")
@@ -79,10 +94,6 @@ root.protocol("WM_DELETE_WINDOW", on_closing)
 heading_label = tk.Label(root, text="JunejoCoin", font=("Arial", 18))
 heading_label.pack(side="top", fill="x", pady=10)
 
-# Browse button to select txt files
-add_document_button = tk.Button(root, text="Add Document", command=browse_file)
-add_document_button.pack(pady=10)
-
 # Block number field
 block_number_label = tk.Label(root, text="Block number:")
 block_number_label.pack()
@@ -92,6 +103,14 @@ block_number_entry.pack()
 # Add block button
 add_block_button = tk.Button(root, text="Add Block", command=add_block)
 add_block_button.pack(pady=10)
+
+# Browse button to select txt files
+add_document_button = tk.Button(root, text="Add Document", command=browse_file)
+add_document_button.pack(pady=10)
+
+# Build Block Button
+build_block_button = tk.Button(root, text="Build Block", command=build_block)
+build_block_button.pack(pady=10)
 
 # Verify chain button
 verify_chain_button = tk.Button(root, text="Verify Chain", command=verify_chain)
