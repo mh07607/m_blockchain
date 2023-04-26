@@ -10,6 +10,7 @@ from tkinter import filedialog, messagebox
 File_Address_txt = [] # List of Tuples (Block Num, FileAddress)
 block_num_lst = [] # List of Block Numbers
 file_address_dropdown = None # Initializing
+built_blocks=[]
 # Blockchain.apppend(BuildBlock(B1))
 
 def browse_file():
@@ -44,17 +45,22 @@ def add_block():
     
 def build_block():
     block_number = block_number_entry.get()
-    if not block_number.isdigit() or block_number not in block_num_lst: #Error Checking/Repeatition Checking
+    if not block_number.isdigit() or block_number not in block_num_lst: # Error Checking/Repeatition Checking
         messagebox.showerror("Error", "Invalid block number")
         return
-    
     # Procures File addresses for the entered block num, and 
     file_addresses = [address[1] for address in File_Address_txt if address[0] == block_number]
     if not file_addresses:
         messagebox.showwarning("Warning", f"No files found for block {block_number}")
         return
-    #Call Build_Tree Here!
+    if block_number in built_blocks: # Avoiding Repeat Build
+        messagebox.showwarning("Warning", f"Block was already built! You cannot make it again! {block_number}")
+        return
+    else:
+        built_blocks.append(block_number) # Noting down Built merkle trees
+    # Call Build_Tree Here!
     #Build_Tree(file_addresses)
+    messagebox.showinfo("Success", "Merkle Tree Constructed! Block built!")
     
 def verify_chain():
     # Verify chain code here
