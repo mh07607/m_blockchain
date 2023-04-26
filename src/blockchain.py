@@ -35,7 +35,7 @@ class Blockchain:
         self.head = None
         #self.file_hash = None
 
-    def add_file(self, filenames):      
+    def add_files(self, filenames):      
 
         if not self.head:
             mtree = MerkleTree(filenames)
@@ -98,10 +98,12 @@ class Blockchain:
 
 # print(blockchain.verify())
 bc = Blockchain()
-bc.add_file(["dataset\sample test case\s1.txt", "dataset\sample test case\s2.txt", "dataset\sample test case\s3.txt"])
+bc.add_files(["dataset\sample test case\s1.txt", "dataset\sample test case\s2.txt", "dataset\sample test case\s3.txt"])
 print(bc.verify())
 with open("dataset\sample test case\s1.txt", "a") as f:
+    f.write("yeet")
 print(bc.verify())
-print(bc.verify_document("dataset\sample test case\s2.txt", 0))
-print(bc.verify_document("dataset\sample test case\s1.txt", 0))
+print("doc3", bc.verify_document("dataset\sample test case\s3.txt", 0))
+print("doc2", bc.verify_document("dataset\sample test case\s2.txt", 0))
+print("doc1", bc.verify_document("dataset\sample test case\s1.txt", 0))
 
