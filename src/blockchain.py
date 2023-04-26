@@ -11,6 +11,12 @@ class Block:
 
     def verify(self):
         self.mtree.verify()
+    """ def calculate_hash(self):
+        sha = hashlib.sha256()
+        sha.update(str(self.data).encode('utf-8'))
+        if self.previous_block:
+            sha.update(str(self.previous_block.hash).encode('utf-8'))
+        return sha.hexdigest() """
 
     #def calculate_hash(self):
         # sha = hashlib.sha256()
