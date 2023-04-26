@@ -160,8 +160,18 @@ class MerkleTree:  # Defining the MerkleTree class
 			return False
 		return path
 	
-	def verify_inclusion(self, content):   #this function currently takes in self.content but that's probably a bad idea when working with files
+	def verify_inclusion(self, address):   #this function currently takes in self.content but that's probably a bad idea when working with files
+		try:							#changed it to address
+			with open(address, 'r') as f:
+				file_data = f.read()
+			f.close()
+		except:
+			return False
+			
+		content = file_data
+
 		hashed_value = Node.hash(content)
+		
 		if(hashed_value in self.leaves_dictionary.keys()):
 			node = self.leaves_dictionary[hashed_value]
 			return self.merkle_proof(node)

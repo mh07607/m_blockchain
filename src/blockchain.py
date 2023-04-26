@@ -63,12 +63,14 @@ class Blockchain:
             i = i + 1
         return True
 
-            
+    def verify_document(self, address, block_number):
+        i = 0
+        current_block = self.head
+        while i < block_number:
+            current_block = current_block.previous_block
+            i = i+1
 
-        # if self.file_hash != current_block.hash:
-        #     return False
-
-        return True
+        return current_block.mtree.verify_inclusion(address)
 
     def update_block(self, block_data, new_data):
         current_block = self.head
@@ -102,3 +104,6 @@ with open("dataset\sample test case\s1.txt", "a") as f:
     f.write("new content")
 f.close()
 print(bc.verify())
+print(bc.verify_document("dataset\sample test case\s2.txt", 0))
+print(bc.verify_document("dataset\sample test case\s1.txt", 0))
+
