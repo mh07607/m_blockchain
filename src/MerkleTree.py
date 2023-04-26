@@ -22,7 +22,6 @@ class MerkleTree():
             level.append(hashlib.sha256((tree[i] + tree[i+1]).encode('utf-8')).hexdigest())
             print("Level ", i, " :", level)
         tree = level
-
         return tree
 
 tree = MerkleTree(['a', 'b', 'c', 'd'])
