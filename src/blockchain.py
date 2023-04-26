@@ -1,42 +1,54 @@
 import hashlib
-from merkle_tree import Merkle_Tree, Node
+from merkle_tree import MerkleTree, Node
 
 class Block:
-    def __init__(self, data, merkle_tree: Node, previous_block=None):
-        self.data = data
+    def __init__(self, data, merkle_tree: MerkleTree, previous_block=None):
+        #self.data = data
         self.previous_block = previous_block
-        self.mtree = merkle_tree
-        self.previous_hash = None
-        self.hash = self.calculate_hash()
+        self.mtree: MerkleTree = merkle_tree
+        #self.previous_hash = None
+        self.hash = self.mtree.root.value#self.calculate_hash()
 
-    def calculate_hash(self):
-        sha = hashlib.sha256()
-        sha.update(str(self.data).encode('utf-8'))
-        if self.previous_block:
-            sha.update(str(self.previous_block.hash).encode('utf-8'))
-        return sha.hexdigest()
+    def verify(self):
+        self.mtree.verify()
 
-    def update_hash(self):
-        self.hash = self.calculate_hash()
-        if self.previous_block:
-            self.previous_block.update_hash()
+    #def calculate_hash(self):
+        # sha = hashlib.sha256()
+        # sha.update(str(self.data).encode('utf-8'))
+        # if self.previous_block:
+        #     sha.update(str(self.previous_block.hash).encode('utf-8'))
+        # return sha.hexdigest()
+
+    # def update_hash(self):
+    #     self.hash = self.calculate_hash()
+    #     if self.previous_block:
+    #         self.previous_block.update_hash()
 
 class Blockchain:
     def __init__(self):
         self.head = None
-        self.file_hash = None
+        #self.file_hash = None
 
-    def add_file(self, filename):
-        with open(filename, 'rb') as f:
-            file_data = f.read()
-            if not self.head:
-                self.head = Block(file_data)
-                self.file_hash = hashlib.sha256(file_data).hexdigest()
-            else:
-                new_block = Block(file_data, self.head)
-                new_block.previous_hash = self.head.hash
-                self.head = new_block
-                self.file_hash = hashlib.sha256(file_data + self.file_hash.encode('utf-8')).hexdigest()
+    def add_file(self, filenames):
+        file_contents = []
+        for filename in filenames:
+            with open(filename, 'r') as f:
+                file_data = f.read()
+            f.close()
+            file_contents.append(file_data)
+        
+
+        if not self.head:
+            mtree = MerkleTree(file_contents)
+            self.head = Block(file_data, mtree)
+            #self.file_hash = hashlib.sha256(file_data).hexdigest()
+        else:
+            mtree = MerkleTree(file_contents)
+            new_block = Block(file_data, self.head)
+            #new_block.previous_hash = self.head.hash
+            new_block.previous_block = self.head
+            self.head = new_block
+                    #self.file_hash = hashlib.sha256(file_data + self.file_hash.encode('utf-8')).hexdigest()
 
     def verify(self):
         if not self.head:
@@ -44,12 +56,12 @@ class Blockchain:
 
         current_block = self.head
         while current_block.previous_block:
-            if current_block.previous_hash != current_block.previous_block.hash:
+            if 
                 return False
             current_block = current_block.previous_block
 
-        if self.file_hash != current_block.hash:
-            return False
+        # if self.file_hash != current_block.hash:
+        #     return False
 
         return True
 
@@ -64,17 +76,23 @@ class Blockchain:
             current_block = current_block.previous_block
 
 
-blockchain = Blockchain()
+# blockchain = Blockchain()
 
-blockchain.add_file("s1.txt")
+# blockchain.add_file("s1.txt")
 
-print(blockchain.verify())
+# print(blockchain.verify())
 
-with open("s1.txt", "a") as f:
-    f.write("This is some new content.")
+# with open("s1.txt", "a") as f:
+#     f.write("This is some new content.")
 
-print(blockchain.verify())
+# print(blockchain.verify())
 
-blockchain.update_block(b'This is the original file contents.', b'This is the new file contents.')
+# blockchain.update_block(b'This is the original file contents.', b'This is the new file contents.')
 
-print(blockchain.verify())
+# print(blockchain.verify())
+bc = Blockchain()
+bc.add_file(["dataset\sample test case\s1.txt", "dataset\sample test case\s2.txt", "dataset\sample test case\s3.txt"])
+print(bc.verify())
+with open("dataset\sample test case\s1.txt", "a") as f:
+    f.write("Teri maa ki chu")
+print(bc.verify())

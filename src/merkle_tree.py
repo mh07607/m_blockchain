@@ -53,7 +53,7 @@ class MerkleTree:  # Defining the MerkleTree class
 		leaves: List[Node] = []
 		for content in contents:
 			node = Node(None, None, Node.hash(content), content)
-			self.leaves_dictionary[content] = node
+			self.leaves_dictionary[node.value] = node
 			leaves.append(node)
 
 		# If the number of leaves is odd, duplicate the last leaf
@@ -100,6 +100,12 @@ class MerkleTree:  # Defining the MerkleTree class
 		right.parent = parent #Storing Content for testing purposes
 		return parent #Returns The root node of the Merkle Tree.
 
+	def verify(self):
+		hashed_value = self.__buildTreeRec(self.leaves).value
+		if(hashed_value == self.root.value):
+			return True
+		return False
+
 	def printTree(self) -> None:
 		self.__printTreeRec(self.root) #Calling Helper function
 		
@@ -144,8 +150,9 @@ class MerkleTree:  # Defining the MerkleTree class
 		return path
 	
 	def verify_inclusion(self, content):   #this function currently takes in self.content but that's probably a bad idea when working with files
-		if(content in self.leaves_dictionary.keys()):
-			node = self.leaves_dictionary[content]
+		hashed_value = Node.hash(content)
+		if(hashed_value in self.leaves_dictionary.keys()):
+			node = self.leaves_dictionary[hashed_value]
 			return self.merkle_proof(node)
 		return False
 
@@ -180,5 +187,5 @@ def mixmerkletree() -> None:
 	print(mtree.merkle_proof(mtree.leaves[9]))
 	print(mtree.verify_inclusion('g'))
 	
-mixmerkletree()
+#mixmerkletree()
 
