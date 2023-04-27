@@ -33,6 +33,26 @@ def browse_file():
             return
     else:
         return
+
+def add_document_to_block():
+    filetypes = [('Text Files', '*.txt')] # Restricting FileType to txt 
+    filename = filedialog.askopenfilename(filetypes=filetypes)
+    if filename:
+        block_number = block_number_entry.get()
+        if block_number.isdigit(): # Checking if Block Number is integer
+            # if block_number not in block_num_lst: # Checking if Block number exists
+            #     messagebox.showerror("Error", "Block Number does not exist")
+            #     return
+            File_Address_txt.append((block_number, filename)) # Creates a tuple of Block_number and File Address
+            blockchain.add_document_to_block(filename, int(block_number))
+            print(File_Address_txt)
+            messagebox.showinfo("Success", "File added")
+            update() # Updating Dropdown Menu's contents
+        else:
+            messagebox.showerror("Error", "Block Number is not an integer")
+            return
+    else:
+        return
     
 def add_block():
     block_number = block_number_entry.get()
@@ -147,6 +167,10 @@ verify_chain_button.pack(pady=10)
 # Verify document button
 verify_document_button = tk.Button(root, text="Verify Document", command=verify_document)
 verify_document_button.pack(pady=10)
+
+# Browse button to select txt files
+add_document_button = tk.Button(root, text="Add document to existing Block", command=add_document_to_block)
+add_document_button.pack(pady=10)
 
 # File address selection dropdown
 file_address_selection_label = tk.Label(root, text="Select file address:")

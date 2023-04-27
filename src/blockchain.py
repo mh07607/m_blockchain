@@ -43,6 +43,14 @@ class Blockchain:
         self.head = block
         self.length = self.length+1
 
+    def add_document_to_block(self, address, block_number):
+        i = self.length
+        current_block = self.head
+        while i > block_number+1:
+            current_block = current_block.previous_block
+            i = i-1
+        current_block.mtree = current_block.mtree.add_Document(address)
+        
 
     def add_files(self, filenames):      
 
@@ -71,7 +79,7 @@ class Blockchain:
                 return i-1
             i = i - 1
         return 'True'
-
+    
     def verify_document(self, address, block_number):
         i = self.length
         current_block = self.head

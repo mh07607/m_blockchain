@@ -45,8 +45,8 @@ class MerkleTree:  # Defining the MerkleTree class
 		self.addresses = addresses
 		self.leaves=[]
 		self.leaves_dictionary = {}
-		#self.root = self.__buildTree(addresses)
-		self.root = self.__buildTreefromString(addresses)
+		self.root = self.__buildTree(addresses)
+		#self.root = self.__buildTreefromString(addresses)
 	
 
 	def __buildTree(self, addresses: List[str]) -> None:
@@ -265,11 +265,11 @@ class MerkleTree:  # Defining the MerkleTree class
 		
 		if(hashed_value in self.leaves_dictionary.keys()):
 			node = self.leaves_dictionary[hashed_value]
-			return self.imerkle_proof(node)
+			return self.merkle_proof(node)
 		return False
 
 
-	def addelement(self, element : str): 
+	def add_element(self, element : str): 
 		node_list = []
 		node, check = self.checkLeafsIsCopied()
 		if check == False:
@@ -294,7 +294,13 @@ class MerkleTree:  # Defining the MerkleTree class
 			node.value: str = Node.hash(node.left.value + node.right.value)  #Calculates Hash
 			node.content: str = f'{node.left.content}+{node.right.content}'	
 			self.root = node
-			
+
+
+	def add_Document(self, address : str):
+		with open(address, 'r') as f:
+				element = f.read()
+		f.close()
+		self.add_element(element)
 
 	def checkLeafsIsCopied(self):
 		for thisLeaf in self.leaves:
@@ -334,5 +340,5 @@ def mixmerkletree() -> None:
 	print(mtree.merkle_proof(mtree.leaves[10]))
 	#print(mtree.verify_inclusion('g'))
 	
-mixmerkletree()
+#mixmerkletree()
 
