@@ -11,9 +11,8 @@ from blockchain import*
 File_Address_txt = [] # List of Tuples (Block Num, FileAddress)
 block_num_lst = [] # List of Block Numbers
 file_address_dropdown = None # Initializing
-built_blocks=[]
-blockchain = Blockchain()
-# Blockchain.apppend(BuildBlock(B1))
+built_blocks=[] # Keeping Track of Constructed Blocks for security purposes so no one can rebuild and tamper
+blockchain = Blockchain()  # Initializing an empty blockchain
 
 def browse_file():
     filetypes = [('Text Files', '*.txt')] # Restricting FileType to txt 
@@ -34,15 +33,15 @@ def browse_file():
     else:
         return
 
-def add_document_to_block():
+def extend_block():
     filetypes = [('Text Files', '*.txt')] # Restricting FileType to txt 
     filename = filedialog.askopenfilename(filetypes=filetypes)
     if filename:
         block_number = block_number_entry.get()
         if block_number.isdigit(): # Checking if Block Number is integer
-            # if block_number not in block_num_lst: # Checking if Block number exists
-            #     messagebox.showerror("Error", "Block Number does not exist")
-            #     return
+            if block_number not in block_num_lst: # Checking if Block number exists
+                 messagebox.showerror("Error", "Block Number does not exist")
+                 return
             File_Address_txt.append((block_number, filename)) # Creates a tuple of Block_number and File Address
             blockchain.add_document_to_block(filename, int(block_number))
             print(File_Address_txt)
@@ -160,6 +159,10 @@ add_document_button.pack(pady=10)
 build_block_button = tk.Button(root, text="Build Block", command=build_block)
 build_block_button.pack(pady=10)
 
+# Browse button to select txt files
+extend_button = tk.Button(root, text="Extend Block", command=extend_block)
+extend_button.pack(pady=10)
+
 # Verify chain button
 verify_chain_button = tk.Button(root, text="Verify Chain", command=verify_chain)
 verify_chain_button.pack(pady=10)
@@ -167,10 +170,6 @@ verify_chain_button.pack(pady=10)
 # Verify document button
 verify_document_button = tk.Button(root, text="Verify Document", command=verify_document)
 verify_document_button.pack(pady=10)
-
-# Browse button to select txt files
-add_document_button = tk.Button(root, text="Add document to existing Block", command=add_document_to_block)
-add_document_button.pack(pady=10)
 
 # File address selection dropdown
 file_address_selection_label = tk.Label(root, text="Select file address:")
