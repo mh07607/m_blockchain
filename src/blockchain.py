@@ -49,7 +49,7 @@ class Blockchain:
         while i > block_number+1:
             current_block = current_block.previous_block
             i = i-1
-        current_block.mtree = current_block.mtree.add_Document(address)
+        current_block.mtree.add_Document(address)
         
 
     def add_files(self, filenames):      

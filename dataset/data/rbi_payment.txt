@@ -1,5 +1,5 @@
 month	year	month_number	start_date	end_date	bank_name	no_atms_on_site	no_atms_off_site	no_pos_on_line	no_pos_off_line	no_credit_cards	no_credit_card_atm_txn	no_credit_card_pos_txn	no_credit_card_atm_txn_value_in_mn	no_credit_card_pos_txn_value_in_mn	no_debit_cards	no_debit_card_atm_txn	no_debit_card_pos_txn	no_debit_card_atm_txn_value_in_mn	no_debit_card_pos_txn_value_in_mn
-November	2011	11	11/1/2011	11/30/2011	Allahabad Bank	207	109	0	0	0	0	0	0	0	1190454	540824	54356	1200	102.5
+November	2011	11	11/1/2011	11/30/2011	Allahabad Bank	2078	109	0	0	0	0	0	0	0	1190454	540824	54356	1200	102.5
 November	2011	11	11/1/2011	11/30/2011	Andhra Bank	479	554	2122	0	121514	3243	92370	28.5	234.7	6698887	6871864	325458	17775.4	451.1
 November	2011	11	11/1/2011	11/30/2011	Bank of Baroda	1242	580	4332	0	70776	2046	72198	1.5	190.4	7307099	6715369	462172	25166.7	695.3
 November	2011	11	11/1/2011	11/30/2011	Bank of India	838	792	1930	501	119248	7824	88123	54.8	236.6	8247225	2048888	474882	7048.8	624.8

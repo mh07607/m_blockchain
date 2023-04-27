@@ -107,7 +107,7 @@ class MerkleTree:  # Defining the MerkleTree class
 	
 	def __buildTreeforVerify(self, addresses: List[str]) -> None:
 
-		#Build the Merkle Tree recursively.
+		# Build the Merkle Tree recursively.
 		# Create leaf nodes for each value in the input list
 		#leaves: List[Node] = [Node(None, None, Node.hash(e), e) for e in values]
 		contents = []
@@ -129,7 +129,7 @@ class MerkleTree:  # Defining the MerkleTree class
 			leaves[-1].is_copied = True
 		# self.leaves = leaves
 
-		# Build the tree recursively
+		#Build the tree recursively
 		
 		return self.__buildTreeRec(leaves)
 
@@ -270,7 +270,7 @@ class MerkleTree:  # Defining the MerkleTree class
 
 
 	def add_element(self, element : str): 
-		node_list = []
+		node_list : List[Node]= []
 		node, check = self.checkLeafsIsCopied()
 		if check == False:
 			#no copy nodes exist, a subtree of the same height as the Merkle Tree needs to be created 
@@ -278,13 +278,17 @@ class MerkleTree:  # Defining the MerkleTree class
 			for i in range(len(self.leaves)-1):
 				node_list.append(Node(None, None, Node.hash(element), element, True))
 			root = self.__buildTreeRec(node_list)
-			self.root = self.__buildTreeRec([self.root, root])
+			self.root = self.__buildTreeRec([self.root, root])		
 			self.leaves.extend(node_list)
+			for i in node_list:
+				self.leaves_dictionary[i.value] = i
 		else:
 			#copy leaf nodes exist and can be replaced
 			#change the copied leafs value
 			node.content = element
+			original_value = node.value
 			node.value = Node.hash(element)
+			original_node = node
 			while node.parent != None: #Loop until you reach the root 
 				#here we are changing the parents value
 				node = node.parent
@@ -293,10 +297,15 @@ class MerkleTree:  # Defining the MerkleTree class
 			#here we finally change the root values
 			node.value: str = Node.hash(node.left.value + node.right.value)  #Calculates Hash
 			node.content: str = f'{node.left.content}+{node.right.content}'	
+
+			del self.leaves_dictionary[original_value] 
+			self.leaves_dictionary[original_node.value] = original_node
+
 			self.root = node
 
 
 	def add_Document(self, address : str):
+		self.addresses.append(address)
 		with open(address, 'r') as f:
 				element = f.read()
 		f.close()
