@@ -45,8 +45,8 @@ class MerkleTree:  # Defining the MerkleTree class
 		self.addresses = addresses
 		self.leaves=[]
 		self.leaves_dictionary = {}
-		self.root = self.__buildTree(addresses)
-
+		#self.root = self.__buildTree(addresses)
+		self.root = self.__buildTreefromString(addresses)
 	
 
 	def __buildTree(self, addresses: List[str]) -> None:
@@ -60,6 +60,34 @@ class MerkleTree:  # Defining the MerkleTree class
 				file_data = f.read()
 			f.close()
 			contents.append(file_data)
+	
+		leaves: List[Node] = []
+		for content in contents:
+			node = Node(None, None, Node.hash(content), content)
+			self.leaves_dictionary[node.value] = node
+			leaves.append(node)
+
+		# If the number of leaves is odd, duplicate the last leaf
+		if len(leaves) % 2 == 1:
+			leaves.append(leaves[-1].copy()) # duplicate last elem if odd number of elements
+
+		self.leaves = leaves
+
+		# Build the tree recursively
+		
+		return self.__buildTreeRec(leaves)
+	
+	def __buildTreefromString(self, contents: List[str]) -> None:
+
+		#Build the Merkle Tree recursively.
+		# Create leaf nodes for each value in the input list
+		#leaves: List[Node] = [Node(None, None, Node.hash(e), e) for e in values]
+		# contents = []
+		# for filename in addresses:
+		# 	with open(filename, 'r') as f:
+		# 		file_data = f.read()
+		# 	f.close()
+		# 	contents.append(file_data)
 	
 		leaves: List[Node] = []
 		for content in contents:
@@ -241,7 +269,7 @@ class MerkleTree:  # Defining the MerkleTree class
 		return False
 
 
-	def addnode(self, element : str): 
+	def addelement(self, element : str): 
 		node_list = []
 		node, check = self.checkLeafsIsCopied()
 		if check == False:
@@ -251,6 +279,7 @@ class MerkleTree:  # Defining the MerkleTree class
 				node_list.append(Node(None, None, Node.hash(element), element, True))
 			root = self.__buildTreeRec(node_list)
 			self.root = self.__buildTreeRec([self.root, root])
+			self.leaves.extend(node_list)
 		else:
 			#copy leaf nodes exist and can be replaced
 			#change the copied leafs value
@@ -265,6 +294,7 @@ class MerkleTree:  # Defining the MerkleTree class
 			node.value: str = Node.hash(node.left.value + node.right.value)  #Calculates Hash
 			node.content: str = f'{node.left.content}+{node.right.content}'	
 			self.root = node
+			
 
 	def checkLeafsIsCopied(self):
 		for thisLeaf in self.leaves:
@@ -296,8 +326,13 @@ def mixmerkletree() -> None:
 	#mtree.printTree() # Print the entire Merkle 
 	#print(mtree.leaves[9].c)
 	mtree.leaves[9].content = 'j'
-	print(mtree.imerkle_proof(mtree.leaves[9]))
+	print(mtree.merkle_proof(mtree.leaves[9]))
+	mtree.addelement('g')
+	print(mtree.merkle_proof(mtree.leaves[10]))
+	print("Root Hash: "+mtree.getRootHash()+"\n")
+	mtree.leaves[10].content = 'a'
+	print(mtree.merkle_proof(mtree.leaves[10]))
 	#print(mtree.verify_inclusion('g'))
 	
-#mixmerkletree()
+mixmerkletree()
 
