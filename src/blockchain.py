@@ -63,21 +63,21 @@ class Blockchain:
             return 'True'
 
         current_block = self.head
-        i = 0
+        i = self.length
         while current_block:
             if(current_block.verify_block()):
                 current_block = current_block.previous_block
             else:
                 return i
-            i = i + 1
+            i = i - 1
         return 'True'
 
     def verify_document(self, address, block_number):
-        i = 0
+        i = self.length
         current_block = self.head
-        while i < block_number:
+        while i > block_number:
             current_block = current_block.previous_block
-            i = i+1
+            i = i-1
 
         return current_block.mtree.verify_inclusion(address)
 
@@ -106,13 +106,13 @@ class Blockchain:
 # blockchain.update_block(b'This is the original file contents.', b'This is the new file contents.')
 
 # print(blockchain.verify())
-bc = Blockchain()
-bc.add_files(["dataset\sample test case\s1.txt", "dataset\sample test case\s2.txt", "dataset\sample test case\s3.txt"])
-print(bc.verify())
-with open("dataset\sample test case\s1.txt", "a") as f:
-    f.write("yeet")
-print(bc.verify())
-print("doc3", bc.verify_document("dataset\sample test case\s3.txt", 0))
-print("doc2", bc.verify_document("dataset\sample test case\s2.txt", 0))
-print("doc1", bc.verify_document("dataset\sample test case\s1.txt", 0))
+# bc = Blockchain()
+# bc.add_files(["dataset\sample test case\s1.txt", "dataset\sample test case\s2.txt", "dataset\sample test case\s3.txt"])
+# print(bc.verify())
+# with open("dataset\sample test case\s1.txt", "a") as f:
+#     f.write("yeet")
+# print(bc.verify())
+# print("doc3", bc.verify_document("dataset\sample test case\s3.txt", 0))
+# print("doc2", bc.verify_document("dataset\sample test case\s2.txt", 0))
+# print("doc1", bc.verify_document("dataset\sample test case\s1.txt", 0))
 
