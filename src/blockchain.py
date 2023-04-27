@@ -68,7 +68,7 @@ class Blockchain:
             if(current_block.verify_block()):
                 current_block = current_block.previous_block
             else:
-                return i
+                return i-1
             i = i - 1
         return 'True'
 
