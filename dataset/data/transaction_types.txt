@@ -1,0 +1,24 @@
+type	explanation	direction	agent
+AR	Authorization reject	-	Card
+AE	Authorization expired	In	Card
+AV	Authorization Reversal	In	Card
+BBU	Cash26 deposit	In	Partner
+CT	Credit Transfer	In	Bank Account
+DI	Dispute	In	Card
+DR	Debit Reversal	In	Bank Account
+PF	Credit Card refund by merchant	In	Card
+PR	Presentment Reversal	In	Card
+WU	Referral payment	In	Number26
+AA	Authorized Action	Out	Card
+BUB	Cash26 withdrawal	Out	Partner
+DD	Direct Debit	Out	Bank Account
+DT	Debit Transfer	Out	Bank Account
+FT	MoneyBeam Transfer	Out	Bank Account
+PT	Presentment	Out	Card
+TUB	Transferwise Transaction	Out	Partner
+TBU	Transferwise Transaction Reversal	In	Partner
+WEE	Fee from N26	Out	Number26
+AL	Account Load	In	Shadow
+AU	Account Unload	Out	Shadow
+BUS	Card TX	Out	Shadow
+BRU	PT without Authorization	Out	Shadow
