@@ -172,23 +172,54 @@ class MerkleTree:  # Defining the MerkleTree class
 			self.__printTreeRec(node.left)
 			self.__printTreeRec(node.right)
 
-	def merkle_proof(self, node:Node):
+	def generate_path(self, node):
 		path = []
-		hashed_value = Node.hash(node.content)
+		bitmap = []
 
 		while(node.parent != None):
-			path.append(node.content)
 			if(node.is_left):
-				hashed_value = Node.hash(hashed_value + node.parent.right.value)
+				hash_of_sibling = node.parent.right.value
 			else:
-				hashed_value = Node.hash(node.parent.left.value + hashed_value)
-
+				hash_of_sibling = node.parent.left.value
+			path.append(hash_of_sibling)
+			bitmap.append(node.is_left)
 			node = node.parent
-		path.append(node.content)
+		
+		return [path, bitmap]
+	
+	def merkle_proof(self, node:Node):
+		retrieved = self.generate_path(node)
+		path = retrieved[0]
+		bitmap = retrieved[1]
+
+		hashed_value = Node.hash(node.content)
+		for i in range(len(path)):
+			if(bitmap[i]):
+				hashed_value = Node.hash(hashed_value + path[i])
+			else:
+				hashed_value = Node.hash(path[i] + hashed_value)
 
 		if(self.root.value != hashed_value):
 			return False
-		return path
+		return True
+		
+	# def merkle_proof(self, node:Node):
+	# 	path = []
+	# 	hashed_value = Node.hash(node.content)
+
+	# 	while(node.parent != None):
+	# 		path.append(node.content)
+	# 		if(node.is_left):
+	# 			hashed_value = Node.hash(hashed_value + node.parent.right.value)
+	# 		else:
+	# 			hashed_value = Node.hash(node.parent.left.value + hashed_value)
+
+	# 		node = node.parent
+	# 	path.append(node.content)
+
+	# 	if(self.root.value != hashed_value):
+	# 		return False
+	# 	return path
 	
 	def verify_inclusion(self, address):   #this function currently takes in self.content but that's probably a bad idea when working with files
 		try:							#changed it to address
@@ -204,7 +235,7 @@ class MerkleTree:  # Defining the MerkleTree class
 		
 		if(hashed_value in self.leaves_dictionary.keys()):
 			node = self.leaves_dictionary[hashed_value]
-			return self.merkle_proof(node)
+			return self.imerkle_proof(node)
 		return False
 
 
@@ -235,8 +266,8 @@ def mixmerkletree() -> None:
 	#mtree.printTree() # Print the entire Merkle 
 	#print(mtree.leaves[9].c)
 	mtree.leaves[9].content = 'j'
-	print(mtree.merkle_proof(mtree.leaves[9]))
-	print(mtree.verify_inclusion('g'))
+	print(mtree.imerkle_proof(mtree.leaves[9]))
+	#print(mtree.verify_inclusion('g'))
 	
 #mixmerkletree()
 
