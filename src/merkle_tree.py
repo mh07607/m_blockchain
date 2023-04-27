@@ -1,6 +1,7 @@
  # Python code for implemementing Merkle Tree
 from typing import List
 import hashlib
+import math
 class Node:
 	def __init__(self, left, right, value: str, content, is_copied=False) -> None:
 		#Initialize a new node of the Merkle Tree.
@@ -97,7 +98,7 @@ class MerkleTree:  # Defining the MerkleTree class
 		# If the number of leaves is odd, duplicate the last leaf
 		if len(leaves) % 2 == 1:
 			leaves.append(leaves[-1].copy()) # duplicate last elem if odd number of elements
-
+			leaves[-1].is_copied = True
 		# self.leaves = leaves
 
 		# Build the tree recursively
@@ -107,6 +108,7 @@ class MerkleTree:  # Defining the MerkleTree class
 	def __buildTreeRec(self, nodes: List[Node]) -> Node: #Contains The list of nodes to be included in the Merkle Tree.
 		if len(nodes) % 2 == 1:  # If the number of nodes is odd, duplicate the last node
 			nodes.append(nodes[-1].copy()) # duplicate last elem if odd number of elements
+			nodes[-1].is_copied = True
 
 		# Calculate the index of the middle node
 		half: int = len(nodes) // 2  
@@ -208,8 +210,36 @@ class MerkleTree:  # Defining the MerkleTree class
 		return False
 
 
-	def addnodes(self, elements : List[str]):  #Muzammil implement this
-		pass								   #We also need to figure out how our merkle tree will remain intact when we use a GUI interface like tkinter
+	def addnode(self, element : str): 
+		node_list = []
+		node, check = self.checkLeafsIsCopied()
+		if check == False:
+			#no copy nodes exist, a subtree of the same height as the Merkle Tree needs to be created 
+			node_list.append(Node(None, None, Node.hash(element), element, False))
+			for i in range(len(self.leaves)-1):
+				node_list.append(Node(None, None, Node.hash(element), element, True))
+			root = self.__buildTreeRec(node_list)
+			self.root = self.__buildTreeRec([self.root, root])
+		else:
+			#copy leaf nodes exist and can be replaced
+			#change the copied leafs value
+			node.content = element
+			node.value = Node.hash(element)
+			while node.parent != None: #Loop until you reach the root 
+				#here we are changing the parents value
+				node = node.parent
+				node.value: str = Node.hash(node.left.value + node.right.value)  #Calculates Hash
+				node.content: str = f'{node.left.content}+{node.right.content}'
+			#here we finally change the root values
+			node.value: str = Node.hash(node.left.value + node.right.value)  #Calculates Hash
+			node.content: str = f'{node.left.content}+{node.right.content}'	
+			self.root = node
+
+	def checkLeafsIsCopied(self):
+		for thisLeaf in self.leaves:
+			if thisLeaf.is_copied == True:
+				return thisLeaf, True
+		return thisLeaf, False
 
 	def getRootHash(self) -> str:
 	    return self.root.value  #Returns The SHA-256 hash of the root node of the Merkle Tree.
