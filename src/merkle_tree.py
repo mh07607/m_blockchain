@@ -5,12 +5,6 @@ import math
 class Node:
 	def __init__(self, left, right, value: str, content, is_copied=False) -> None:
 		#Initialize a new node of the Merkle Tree.
- 	
-		#- left (Node): The left child node.
-		#- right (Node): The right child node.
-		#- value (str): The hash value of the node.
-		#- content (str): The content of the node.
-		#- is_copied (bool): A flag indicating whether the node is a copy (True) or not (False).
 
 		self.left: Node = left
 		self.right: Node = right
@@ -34,27 +28,26 @@ class Node:
 		#creates and returns the copy of a node. 
 		return Node(self.left, self.right, self.value, self.content, True)
 
-	# def set_parent(self, parent):
-	# 	self.parent = parent
 	
 
 class MerkleTree:  # Defining the MerkleTree class
 
 	def __init__(self, addresses: List[str]) -> None:
 		#Initialize a new Merkle Tree.
-		self.addresses = addresses
-		self.leaves=[]
-		self.leaves_dictionary = {}
+		self.addresses = addresses #addresses of files that are to be hashed 
+		self.leaves=[]   #all leaf nodes are stored here 
+		self.leaves_dictionary = {}  #values are leaf nodes and keys are their corresponding hashes
 		self.root = self.__buildTree(addresses)
-		#self.root = self.__buildTreefromString(addresses)
 	
 
 	def __buildTree(self, addresses: List[str]) -> None:
 
-		#Build the Merkle Tree recursively.
-		# Create leaf nodes for each value in the input list
-		#leaves: List[Node] = [Node(None, None, Node.hash(e), e) for e in values]
+		#Build the list of nodes needed to create the tree.
+		# Create leaf nodes for each address given
+
+
 		contents = []
+		#first we read each file from given list of file addresses and store it in a list
 		for filename in addresses:
 			with open(filename, 'r') as f:
 				file_data = f.read()
@@ -62,6 +55,7 @@ class MerkleTree:  # Defining the MerkleTree class
 			contents.append(file_data)
 	
 		leaves: List[Node] = []
+		#then we make a (MerkleTree) Node object for each element 
 		for content in contents:
 			node = Node(None, None, Node.hash(content), content)
 			self.leaves_dictionary[node.value] = node
@@ -77,37 +71,34 @@ class MerkleTree:  # Defining the MerkleTree class
 		
 		return self.__buildTreeRec(leaves)
 	
-	def __buildTreefromString(self, contents: List[str]) -> None:
+	#--------------obsolete (was made for testing)--------------------------
+	# def __buildTreefromString(self, contents: List[str]) -> None:
 
-		#Build the Merkle Tree recursively.
-		# Create leaf nodes for each value in the input list
-		#leaves: List[Node] = [Node(None, None, Node.hash(e), e) for e in values]
-		# contents = []
-		# for filename in addresses:
-		# 	with open(filename, 'r') as f:
-		# 		file_data = f.read()
-		# 	f.close()
-		# 	contents.append(file_data)
+	# 	#leaves: List[Node] = [Node(None, None, Node.hash(e), e) for e in values]
+	# 	# contents = []
+	# 	# for filename in addresses:
+	# 	# 	with open(filename, 'r') as f:
+	# 	# 		file_data = f.read()
+	# 	# 	f.close()
+	# 	# 	contents.append(file_data)
 	
-		leaves: List[Node] = []
-		for content in contents:
-			node = Node(None, None, Node.hash(content), content)
-			self.leaves_dictionary[node.value] = node
-			leaves.append(node)
+	# 	leaves: List[Node] = []
+	# 	for content in contents:
+	# 		node = Node(None, None, Node.hash(content), content)
+	# 		self.leaves_dictionary[node.value] = node
+	# 		leaves.append(node)
 
-		# If the number of leaves is odd, duplicate the last leaf
-		if len(leaves) % 2 == 1:
-			leaves.append(leaves[-1].copy()) # duplicate last elem if odd number of elements
+	# 	# If the number of leaves is odd, duplicate the last leaf
+	# 	if len(leaves) % 2 == 1:
+	# 		leaves.append(leaves[-1].copy()) # duplicate last elem if odd number of elements
 
-		self.leaves = leaves
-
-		# Build the tree recursively
+	# 	self.leaves = leaves
 		
-		return self.__buildTreeRec(leaves)
+	# 	return self.__buildTreeRec(leaves)
 	
 	def __buildTreeforVerify(self, addresses: List[str]) -> None:
 
-		# Build the Merkle Tree recursively.
+		# builds a non-destructive merkle tree only used for verification purposes
 		# Create leaf nodes for each value in the input list
 		#leaves: List[Node] = [Node(None, None, Node.hash(e), e) for e in values]
 		contents = []
@@ -120,14 +111,12 @@ class MerkleTree:  # Defining the MerkleTree class
 		leaves: List[Node] = []
 		for content in contents:
 			node = Node(None, None, Node.hash(content), content)
-			# self.leaves_dictionary[node.value] = node
 			leaves.append(node)
 
 		# If the number of leaves is odd, duplicate the last leaf
 		if len(leaves) % 2 == 1:
 			leaves.append(leaves[-1].copy()) # duplicate last elem if odd number of elements
 			leaves[-1].is_copied = True
-		# self.leaves = leaves
 
 		#Build the tree recursively
 		
@@ -203,8 +192,8 @@ class MerkleTree:  # Defining the MerkleTree class
 			self.__printTreeRec(node.right)
 
 	def generate_path(self, node):
-		path = []
-		bitmap = []
+		path = []  #hash values of siblings of each node that is on the path from leaf to root
+		bitmap = [] #whether each sibling is left orr right
 
 		while(node.parent != None):
 			if(node.is_left):
@@ -218,38 +207,22 @@ class MerkleTree:  # Defining the MerkleTree class
 		return [path, bitmap]
 	
 	def merkle_proof(self, node:Node):
-		retrieved = self.generate_path(node)
+		retrieved = self.generate_path(node) #generating path from the leaf node to the root
 		path = retrieved[0]
 		bitmap = retrieved[1]
 
 		hashed_value = Node.hash(node.content)
+		#hashing each node hash added with its sibling hash retrieved from path. We will repeat this process by moving to parent of current node until we reach the root node.
 		for i in range(len(path)):
-			if(bitmap[i]):
+			if(bitmap[i]): #if current element is left then hash(current node + right sibling)
 				hashed_value = Node.hash(hashed_value + path[i])
-			else:
+			else:	 #otherwise hash(left_sibling + current node)
 				hashed_value = Node.hash(path[i] + hashed_value)
 
-		if(self.root.value != hashed_value):
+		if(self.root.value != hashed_value): #checking if the root hash is the same as the hash we have calulated
 			return False
 		return True
 		
-	# def merkle_proof(self, node:Node):
-	# 	path = []
-	# 	hashed_value = Node.hash(node.content)
-
-	# 	while(node.parent != None):
-	# 		path.append(node.content)
-	# 		if(node.is_left):
-	# 			hashed_value = Node.hash(hashed_value + node.parent.right.value)
-	# 		else:
-	# 			hashed_value = Node.hash(node.parent.left.value + hashed_value)
-
-	# 		node = node.parent
-	# 	path.append(node.content)
-
-	# 	if(self.root.value != hashed_value):
-	# 		return False
-	# 	return path
 	
 	def verify_inclusion(self, address):   #this function currently takes in self.content but that's probably a bad idea when working with files
 		try:							#changed it to address
@@ -263,7 +236,7 @@ class MerkleTree:  # Defining the MerkleTree class
 
 		hashed_value = Node.hash(content)
 		
-		if(hashed_value in self.leaves_dictionary.keys()):
+		if(hashed_value in self.leaves_dictionary.keys()): #we use dictionary here to generate path from leaf node to root, if path was given we would not use dictionary and just use the merkle proof algorithm.
 			node = self.leaves_dictionary[hashed_value]
 			return self.merkle_proof(node)
 		return False
@@ -323,11 +296,7 @@ class MerkleTree:  # Defining the MerkleTree class
 	
 	
 def mixmerkletree() -> None:
-	""" The mixmerkletree() function takes a list of transactions and generates a Merkle tree by 
-	recursively combining pairs of hashes until only one root hash remains. It then adds a 
-	"mixing" hash to the root hash to make it unique and returns the final root hash. This 
-	process helps to ensure the privacy of the transactions by making it difficult to trace the 
-	original transaction from the final output. """
+	#for testing perposes
 
 	# Define a list of input values
 	elems = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
@@ -335,11 +304,14 @@ def mixmerkletree() -> None:
 	print("Inputs: ")
 	print(*elems, sep=" | ") # Print the input values separated by "|"
 	print("")
-	mtree = MerkleTree(elems) # Create a Merkle Tree from the input values
-	print("Root Hash: "+mtree.getRootHash()+"\n") # Print the root hash of the Merkle Tree
+	mtree = MerkleTree(elems) 
+	print("Root Hash: "+mtree.getRootHash()+"\n")
+
 	#print(mtree.root.content)
 	#mtree.printTree() # Print the entire Merkle 
 	#print(mtree.leaves[9].c)
+
+	#------------testing merkle proof-----------------
 	mtree.leaves[9].content = 'j'
 	print(mtree.merkle_proof(mtree.leaves[9]))
 	mtree.addelement('g')
