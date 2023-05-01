@@ -123,8 +123,10 @@ def update():
     if file_addresses:
         if file_address_dropdown is not None:  # Check if it already exists and destroy it
             file_address_dropdown.destroy()
+            #print("Dropdown Destroyed")
         file_address_dropdown = tk.OptionMenu(root, file_address_selection, *file_addresses)
         file_address_dropdown.pack()
+        #print("Dropdown Created")
     else:
         tk.Label(root, text="No files added yet").pack()
         
