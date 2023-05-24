@@ -157,6 +157,7 @@ add_block_button.pack(pady=10)
 add_document_button = tk.Button(root, text="Add Document", command=browse_file)
 add_document_button.pack(pady=10)
 
+
 # Build Block Button
 build_block_button = tk.Button(root, text="Build Block", command=build_block)
 build_block_button.pack(pady=10)
